@@ -3,6 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#1B5E20">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Entrega+Pro">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
 <title>ENTREGA+PRO</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -60,9 +66,20 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f0f2f5;min-heigh
 .codigo-usado{background:#fff3e0;border:1px solid #ff9800;border-radius:12px;padding:12px;margin:10px 0;text-align:center}
 .codigo-usado .titulo{font-weight:700;color:#e65100;font-size:13px}
 .codigo-usado .codigo-item{font-family:monospace;font-size:14px;color:#bf360c;margin-top:6px;padding:6px;background:#ffe0b2;border-radius:6px}
+
+/* PWA Install Banner */
+.install-banner{background:#e8f5e9;border:2px solid #4CAF50;border-radius:12px;padding:14px;margin:12px;display:none;align-items:center;gap:12px}
+.install-banner.mostrar{display:flex}
+.install-banner p{flex:1;font-size:13px;color:#1B5E20}
+.install-banner button{background:#1B5E20;color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer}
 </style>
 </head>
 <body>
+<div class="install-banner" id="installBanner">
+    <p>📲 Instale o Entrega+Pro na tela inicial para usar como app!</p>
+    <button onclick="instalarPWA()">Instalar</button>
+</div>
+
 <div class="container">
     <div class="header">
         <h1>🛵 ENTREGA+PRO <span id="badge" class="badge">GRÁTIS</span></h1>
@@ -565,22 +582,18 @@ function limparTudo() {
     msg += '\n\nEsta ação NÃO pode ser desfeita!';
 
     if (confirm(msg)) {
-        // Salva o estado PRO antes de limpar
         var proStatus = localStorage.getItem('pro_ativado');
         var proData = localStorage.getItem('data_ativacao');
         var proCodigo = localStorage.getItem('codigo_ativo');
         var codigosUsados = localStorage.getItem('codigos_usados');
 
-        // Limpa tudo
         localStorage.clear();
 
-        // Restaura o estado PRO (se estava ativo)
         if (proStatus === 'true') {
             localStorage.setItem('pro_ativado', 'true');
             localStorage.setItem('data_ativacao', proData);
             localStorage.setItem('codigo_ativo', proCodigo);
         }
-        // Restaura códigos usados para manter bloqueio
         if (codigosUsados) {
             localStorage.setItem('codigos_usados', codigosUsados);
         }
@@ -660,6 +673,42 @@ function mostrarToast(msg) {
 
 function pro() {
     window.open('https://wa.me/5511952217226?text=Olá! Quero comprar o plano PRO do Entrega+Pro!', '_blank');
+}
+
+// ========== PWA ==========
+let deferredPrompt;
+const installBanner = document.getElementById('installBanner');
+
+window.addEventListener('beforeinstallprompt', function(e) {
+    e.preventDefault();
+    deferredPrompt = e;
+    if (installBanner) installBanner.classList.add('mostrar');
+});
+
+function instalarPWA() {
+    if (!deferredPrompt) {
+        mostrarToast('Para instalar: menu do navegador → "Adicionar à tela inicial"');
+        return;
+    }
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(function(choiceResult) {
+        if (choiceResult.outcome === 'accepted') {
+            mostrarToast('Entrega+Pro instalado!');
+        }
+        if (installBanner) installBanner.classList.remove('mostrar');
+        deferredPrompt = null;
+    });
+}
+
+if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
+    if (installBanner) installBanner.style.display = 'none';
+}
+
+// Registrar Service Worker
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js')
+        .then(function(r) { console.log('SW ok:', r.scope); })
+        .catch(function(e) { console.log('SW erro:', e); });
 }
 
 document.addEventListener('DOMContentLoaded', verificarStatus);

@@ -4,32 +4,77 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>Gerador de Códigos - Entrega+Pro</title>
+<meta name="theme-color" content="#1B5E20">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Gerador - Entrega+Pro">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:system-ui,-apple-system,sans-serif;background:linear-gradient(135deg,#1B5E20,#2E7D32);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
-.container{max-width:400px;width:100%}
-.card{background:#fff;border-radius:20px;padding:30px;box-shadow:0 10px 40px rgba(0,0,0,.3)}
-.header{text-align:center;margin-bottom:25px}
-.header h1{font-size:22px;color:#1B5E20}
-.header p{color:#888;font-size:13px;margin-top:5px}
-.input-group{margin-bottom:20px}
-.input-group label{display:block;font-size:13px;color:#555;margin-bottom:8px;font-weight:600}
-.input-group input{width:100%;padding:14px;border:2px solid #e8e8e8;border-radius:12px;font-size:16px;text-align:center;letter-spacing:2px;text-transform:uppercase}
-.input-group input:focus{border-color:#1B5E20;outline:none}
-.btn{width:100%;padding:16px;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;margin-top:10px}
+.container{max-width:420px;width:100%}
+.card{background:#fff;border-radius:20px;padding:24px;box-shadow:0 10px 40px rgba(0,0,0,.3)}
+.header{text-align:center;margin-bottom:20px}
+.header h1{font-size:20px;color:#1B5E20}
+.header p{color:#888;font-size:12px;margin-top:4px}
+.input-group{margin-bottom:14px}
+.input-group label{display:block;font-size:12px;color:#555;margin-bottom:6px;font-weight:600}
+.input-group input,.input-group select,.input-group textarea{width:100%;padding:12px;border:2px solid #e8e8e8;border-radius:10px;font-size:15px;font-family:inherit}
+.input-group input:focus,.input-group select:focus,.input-group textarea:focus{border-color:#1B5E20;outline:none}
+.input-group input{text-align:center;letter-spacing:2px;text-transform:uppercase}
+.input-group textarea{resize:vertical;min-height:70px;font-size:13px}
+.btn{width:100%;padding:14px;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;margin-top:8px;transition:opacity .2s;display:flex;align-items:center;justify-content:center;gap:6px}
+.btn:active{opacity:.8}
 .btn-primary{background:linear-gradient(135deg,#1B5E20,#2E7D32);color:#fff}
 .btn-secondary{background:#f0f0f0;color:#333}
-.resultado{background:linear-gradient(135deg,#1B5E20,#2E7D32);color:#fff;border-radius:12px;padding:20px;text-align:center;margin-top:20px;display:none}
+.btn-whatsapp{background:linear-gradient(135deg,#25D366,#128C7E);color:#fff}
+.btn-whatsapp:disabled{background:#ccc;cursor:not-allowed}
+.btn-danger{background:#ff3b30;color:#fff;font-size:13px;padding:10px}
+.resultado{background:linear-gradient(135deg,#1B5E20,#2E7D32);color:#fff;border-radius:12px;padding:18px;text-align:center;margin-top:16px;display:none}
 .resultado.mostrar{display:block}
-.resultado .label{font-size:12px;opacity:.8;margin-bottom:5px}
-.resultado .codigo{font-size:24px;font-weight:800;letter-spacing:2px}
-.resultado .valido{font-size:12px;margin-top:10px;padding:8px;background:rgba(255,255,255,.2);border-radius:8px}
-.lista-codigos{margin-top:20px;max-height:300px;overflow-y:auto}
-.codigo-item{background:#f8f9fa;border-radius:10px;padding:12px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
-.codigo-item .texto{font-family:monospace;font-size:14px;font-weight:700;color:#1B5E20}
-.codigo-item .copiar{background:#1B5E20;color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:12px;cursor:pointer}
-.info-box{background:#e8f5e9;border-radius:12px;padding:15px;margin-top:20px;font-size:12px;color:#1B5E20}
-.info-box strong{display:block;margin-bottom:5px}
+.resultado .label{font-size:11px;opacity:.8;margin-bottom:4px}
+.resultado .codigo{font-size:22px;font-weight:800;letter-spacing:2px}
+.resultado .valido{font-size:11px;margin-top:8px;padding:6px;background:rgba(255,255,255,.2);border-radius:6px}
+.lista-codigos{margin-top:16px;max-height:280px;overflow-y:auto}
+.lista-titulo{font-weight:700;color:#1B5E20;margin-bottom:8px;font-size:13px}
+.codigo-item{background:#f8f9fa;border-radius:10px;padding:10px 12px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.codigo-item .texto{font-family:monospace;font-size:13px;font-weight:700;color:#1B5E20;flex:1;word-break:break-all}
+.codigo-item .acoes{display:flex;gap:5px}
+.codigo-item .copiar,.codigo-item .enviar{background:#1B5E20;color:#fff;border:none;border-radius:6px;padding:5px 8px;font-size:11px;cursor:pointer;white-space:nowrap}
+.codigo-item .enviar{background:linear-gradient(135deg,#25D366,#128C7E)}
+.info-box{background:#e8f5e9;border-radius:10px;padding:12px;margin-top:16px;font-size:11px;color:#1B5E20}
+.info-box strong{display:block;margin-bottom:4px}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#1B5E20;color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;z-index:1000;animation:fadeIn .3s}
+@keyframes fadeIn{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+.secao-envio{background:#f8f9fa;border-radius:10px;padding:14px;margin-top:14px;border:1px solid #e8e8e8}
+.secao-envio-titulo{font-size:13px;font-weight:600;color:#1B5E20;margin-bottom:8px}
+.cliente-card{background:#fff;border:1px solid #e8e8e8;border-radius:10px;padding:10px 12px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.cliente-card .info{flex:1}
+.cliente-card .nome{font-size:13px;font-weight:600;color:#1c1c1e}
+.cliente-card .numero{font-size:12px;color:#8e8e93}
+.cliente-card .acoes{display:flex;gap:5px}
+.cliente-card .btn-mini{background:#1B5E20;color:#fff;border:none;border-radius:6px;padding:5px 10px;font-size:11px;cursor:pointer}
+.cliente-card .btn-mini.selecionar{background:#007aff}
+.cliente-card .btn-mini.excluir{background:#ff3b30}
+.cliente-card.selecionado{border-color:#1B5E20;background:#e8f5e9}
+.abas{display:flex;gap:4px;margin-bottom:16px;background:#f0f0f0;border-radius:10px;padding:4px}
+.aba{flex:1;padding:10px;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;background:transparent;color:#666;transition:.2s}
+.aba.ativa{background:#fff;color:#1B5E20;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.panel{display:none}
+.panel.ativo{display:block}
+
+/* SIMULAÇÃO DO WHATSAPP */
+.simulador-wa{background:#e5ddd5;border-radius:12px;padding:16px;margin-top:14px;border:1px solid #d1d1d1;position:relative}
+.simulador-wa-header{background:#075e54;color:#fff;padding:10px 14px;border-radius:8px 8px 0 0;display:flex;align-items:center;gap:10px;margin:-16px -16px 12px -16px}
+.simulador-wa-avatar{width:32px;height:32px;background:#128c7e;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px}
+.simulador-wa-nome{font-size:13px;font-weight:600}
+.simulador-wa-numero{font-size:10px;opacity:.8}
+.simulador-wa-msg{background:#dcf8c6;border-radius:8px 8px 0 8px;padding:10px 12px;font-size:13px;color:#1c1c1e;margin-left:auto;max-width:85%;word-break:break-word;position:relative}
+.simulador-wa-msg::after{content:"";position:absolute;bottom:0;right:-6px;width:12px;height:12px;background:#dcf8c6;clip-path:polygon(0 0,0 100%,100% 100%)}
+.simulador-wa-status{font-size:10px;color:#8e8e93;text-align:right;margin-top:4px;padding-right:4px}
+.simulador-wa-aviso{background:#fffbe6;border:1px solid #ffe58f;border-radius:8px;padding:10px;font-size:12px;color:#d48806;margin-top:12px}
+.simulador-wa-link{background:#f0f0f0;border-radius:8px;padding:10px;font-size:11px;color:#555;margin-top:10px;word-break:break-all;font-family:monospace}
 </style>
 </head>
 <body>
@@ -40,52 +85,315 @@ body{font-family:system-ui,-apple-system,sans-serif;background:linear-gradient(1
             <p>Entrega+Pro - Códigos de Ativação PRO</p>
         </div>
 
-        <div class="input-group">
-            <label>Digite 4 caracteres (A-Z, 2-9)</label>
-            <input type="text" id="segmento" placeholder="EX: ABCD" maxlength="4" oninput="this.value = this.value.toUpperCase().replace(/[^A-Z2-9]/g, '')">
+        <div class="abas">
+            <button class="aba ativa" id="aba-gerador">🎲 Gerar</button>
+            <button class="aba" id="aba-clientes">👤 Clientes</button>
         </div>
 
-        <button class="btn btn-primary" onclick="gerarCodigo()">✨ Gerar Código</button>
-        <button class="btn btn-secondary" onclick="gerarAleatorio()" style="margin-top:10px">🎲 Gerar Aleatório</button>
-        <button class="btn btn-secondary" onclick="gerarVarios(10)" style="margin-top:10px">📋 Gerar 10 Códigos</button>
+        <!-- ABA GERADOR -->
+        <div id="panel-gerador" class="panel ativo">
+            <div class="input-group">
+                <label>Selecionar cliente</label>
+                <select id="selectCliente">
+                    <option value="">-- Selecione um cliente --</option>
+                </select>
+            </div>
 
-        <div id="resultado" class="resultado">
-            <div class="label">CÓDIGO GERADO</div>
-            <div class="codigo" id="codigo-gerado"></div>
-            <div class="valido" id="validacao"></div>
+            <div class="input-group">
+                <label>Digite 4 caracteres (A-Z, 2-9)</label>
+                <input type="text" id="segmento" placeholder="EX: ABCD" maxlength="4">
+            </div>
+
+            <button class="btn btn-primary" id="btnGerar">✨ Gerar Código</button>
+            <button class="btn btn-secondary" id="btnAleatorio">🎲 Gerar Aleatório</button>
+            <button class="btn btn-secondary" id="btnVarios">📋 Gerar 10 Códigos</button>
+
+            <div id="resultado" class="resultado">
+                <div class="label">CÓDIGO GERADO</div>
+                <div class="codigo" id="codigo-gerado"></div>
+                <div class="valido" id="validacao"></div>
+            </div>
+
+            <div class="secao-envio" id="secao-envio" style="display:none">
+                <div class="secao-envio-titulo">📱 Enviar para o cliente</div>
+                <div id="clienteSelecionadoInfo" style="margin-bottom:10px;font-size:13px;color:#555"></div>
+
+                <div class="simulador-wa" id="simulador" style="display:none">
+                    <div class="simulador-wa-header">
+                        <div class="simulador-wa-avatar">👤</div>
+                        <div>
+                            <div class="simulador-wa-nome" id="simNome">Cliente</div>
+                            <div class="simulador-wa-numero" id="simNumero">(19) 99999-9999</div>
+                        </div>
+                    </div>
+                    <div class="simulador-wa-msg" id="simMensagem">
+                        Olá! Seu código é DAKI-XXXX-X
+                    </div>
+                    <div class="simulador-wa-status">✓✓ Enviado</div>
+                    <div class="simulador-wa-aviso">
+                        <strong>💡 Como funciona:</strong><br>
+                        Ao clicar "Enviar pelo WhatsApp", o WhatsApp abre uma conversa com <strong id="avisoNome">o cliente</strong> e a mensagem acima já estará pronta. Você só precisa apertar o botão de enviar no WhatsApp.
+                    </div>
+                    <div class="simulador-wa-link" id="simLink">
+                        https://wa.me/55...?text=...
+                    </div>
+                </div>
+
+                <div class="input-group" style="margin-top:10px">
+                    <label>Mensagem (pode editar)</label>
+                    <textarea id="mensagemCliente">Olá {NOME}! Seu código de ativação Entrega+Pro:
+
+{CODIGO}
+
+Digite esse código no app para ativar o plano PRO. Cada código só pode ser usado uma vez.</textarea>
+                </div>
+                <button class="btn btn-whatsapp" id="btnEnviar" disabled>
+                    <span>💬</span> Enviar pelo WhatsApp
+                </button>
+            </div>
+
+            <div class="lista-codigos" id="lista-codigos"></div>
         </div>
 
-        <div class="lista-codigos" id="lista-codigos"></div>
+        <!-- ABA CLIENTES -->
+        <div id="panel-clientes" class="panel">
+            <div class="input-group">
+                <label>Nome do cliente</label>
+                <input type="text" id="novoNome" placeholder="Ex: João Silva" style="text-transform:none;letter-spacing:0;text-align:left">
+            </div>
+            <div class="input-group">
+                <label>WhatsApp do cliente (DDD + número, ex: 19999999999)</label>
+                <input type="tel" id="novoNumero" placeholder="19999999999" maxlength="11" style="text-transform:none;letter-spacing:0;text-align:left">
+            </div>
+            <button class="btn btn-primary" id="btnAddCliente">➕ Adicionar Cliente</button>
+
+            <div class="lista-codigos" id="lista-clientes" style="margin-top:16px">
+                <div class="lista-titulo">👤 Clientes cadastrados:</div>
+            </div>
+        </div>
 
         <div class="info-box">
             <strong>ℹ️ Como funciona:</strong>
-            Cada código só pode ser usado UMA vez. Quando o cliente volta para o plano Gratuito, o código fica bloqueado e ele precisa de um novo código para ativar o PRO novamente.
+            Cadastre os clientes na aba "Clientes", depois selecione na aba "Gerar" e envie o código direto pelo WhatsApp. Cada código só pode ser usado UMA vez.
         </div>
     </div>
 </div>
 
 <script>
 const CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+let ultimoCodigo = "";
+let clienteAtual = null;
+
+// ========== EVENT LISTENERS ==========
+
+document.getElementById('aba-gerador').addEventListener('click', function() { mostrarAba('gerador'); });
+document.getElementById('aba-clientes').addEventListener('click', function() { mostrarAba('clientes'); });
+
+document.getElementById('segmento').addEventListener('input', function() {
+    this.value = this.value.toUpperCase().replace(/[^A-Z2-9]/g, '');
+});
+
+document.getElementById('novoNumero').addEventListener('input', function() {
+    this.value = this.value.replace(/\D/g, '');
+});
+
+document.getElementById('selectCliente').addEventListener('change', onClienteSelecionado);
+
+document.getElementById('btnGerar').addEventListener('click', gerarCodigo);
+document.getElementById('btnAleatorio').addEventListener('click', gerarAleatorio);
+document.getElementById('btnVarios').addEventListener('click', function() { gerarVarios(10); });
+document.getElementById('btnAddCliente').addEventListener('click', adicionarCliente);
+document.getElementById('btnEnviar').addEventListener('click', enviarWhatsApp);
+
+document.getElementById('mensagemCliente').addEventListener('input', function() {
+    if (clienteAtual && ultimoCodigo) atualizarSimulador();
+});
+
+// ========== FUNÇÕES ==========
+
+function mostrarAba(aba) {
+    document.querySelectorAll('.aba').forEach(b => b.classList.remove('ativa'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('ativo'));
+    document.getElementById('aba-' + aba).classList.add('ativa');
+    document.getElementById('panel-' + aba).classList.add('ativo');
+}
+
+function formatarNumero(numero) {
+    // Formata (XX) XXXXX-XXXX
+    if (numero.length === 11) {
+        return '(' + numero.substring(0,2) + ') ' + numero.substring(2,7) + '-' + numero.substring(7,11);
+    }
+    if (numero.length === 10) {
+        return '(' + numero.substring(0,2) + ') ' + numero.substring(2,6) + '-' + numero.substring(6,10);
+    }
+    return numero;
+}
+
+function carregarClientes() {
+    const clientes = JSON.parse(localStorage.getItem('ep_clientes') || '[]');
+    atualizarSelectClientes();
+    atualizarListaClientes();
+    return clientes;
+}
+
+function salvarClientes(clientes) {
+    localStorage.setItem('ep_clientes', JSON.stringify(clientes));
+    atualizarSelectClientes();
+    atualizarListaClientes();
+}
+
+function adicionarCliente() {
+    const nome = document.getElementById('novoNome').value.trim();
+    const numero = document.getElementById('novoNumero').value.trim();
+
+    if (!nome) { alert('⚠️ Digite o nome do cliente!'); return; }
+    if (!numero || numero.length < 10) { alert('⚠️ Digite um número de WhatsApp válido!\n\nExemplo: 19999999999 (DDD + número, sem +55)'); return; }
+
+    const clientes = JSON.parse(localStorage.getItem('ep_clientes') || '[]');
+
+    if (clientes.find(c => c.numero === numero)) {
+        alert('⚠️ Já existe um cliente com esse número!');
+        return;
+    }
+
+    clientes.push({ id: Date.now(), nome, numero });
+    salvarClientes(clientes);
+
+    document.getElementById('novoNome').value = '';
+    document.getElementById('novoNumero').value = '';
+    mostrarToast('Cliente adicionado!');
+}
+
+function removerCliente(id) {
+    if (!confirm('Tem certeza que deseja remover este cliente?')) return;
+    const clientes = JSON.parse(localStorage.getItem('ep_clientes') || '[]');
+    const filtrados = clientes.filter(c => c.id !== id);
+    salvarClientes(filtrados);
+    mostrarToast('Cliente removido!');
+}
+
+function selecionarCliente(id) {
+    const clientes = JSON.parse(localStorage.getItem('ep_clientes') || '[]');
+    clienteAtual = clientes.find(c => c.id === id) || null;
+    atualizarListaClientes();
+
+    if (clienteAtual) {
+        document.getElementById('selectCliente').value = id;
+        onClienteSelecionado();
+        mostrarAba('gerador');
+        mostrarToast('Cliente selecionado: ' + clienteAtual.nome);
+    }
+}
+
+function atualizarSelectClientes() {
+    const clientes = JSON.parse(localStorage.getItem('ep_clientes') || '[]');
+    const select = document.getElementById('selectCliente');
+    select.innerHTML = '<option value="">-- Selecione um cliente --</option>';
+    clientes.forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c.id;
+        opt.textContent = c.nome + ' (' + formatarNumero(c.numero) + ')';
+        select.appendChild(opt);
+    });
+}
+
+function atualizarListaClientes() {
+    const clientes = JSON.parse(localStorage.getItem('ep_clientes') || '[]');
+    const lista = document.getElementById('lista-clientes');
+
+    if (clientes.length === 0) {
+        lista.innerHTML = '<div class="lista-titulo">👤 Clientes cadastrados:</div><div style="text-align:center;color:#888;font-size:13px;padding:20px">Nenhum cliente cadastrado ainda.</div>';
+        return;
+    }
+
+    lista.innerHTML = '<div class="lista-titulo">👤 Clientes cadastrados:</div>';
+    clientes.forEach(c => {
+        const item = document.createElement('div');
+        item.className = 'cliente-card' + (clienteAtual && clienteAtual.id === c.id ? ' selecionado' : '');
+        item.innerHTML = '<div class="info"><div class="nome">' + escapeHtml(c.nome) + '</div><div class="numero">' + formatarNumero(c.numero) + '</div></div>' +
+            '<div class="acoes">' +
+            '<button class="btn-mini selecionar" data-id="' + c.id + '">✓ Selecionar</button>' +
+            '<button class="btn-mini excluir" data-id="' + c.id + '">🗑</button>' +
+            '</div>';
+        lista.appendChild(item);
+    });
+
+    lista.querySelectorAll('.btn-mini.selecionar').forEach(btn => {
+        btn.addEventListener('click', function() { selecionarCliente(parseInt(this.dataset.id)); });
+    });
+    lista.querySelectorAll('.btn-mini.excluir').forEach(btn => {
+        btn.addEventListener('click', function() { removerCliente(parseInt(this.dataset.id)); });
+    });
+}
+
+function onClienteSelecionado() {
+    const select = document.getElementById('selectCliente');
+    const id = parseInt(select.value);
+    const clientes = JSON.parse(localStorage.getItem('ep_clientes') || '[]');
+    clienteAtual = clientes.find(c => c.id === id) || null;
+
+    const info = document.getElementById('clienteSelecionadoInfo');
+    const btn = document.getElementById('btnEnviar');
+
+    if (clienteAtual) {
+        info.innerHTML = '<strong>✓ Cliente selecionado:</strong> ' + escapeHtml(clienteAtual.nome) + ' — WhatsApp: ' + formatarNumero(clienteAtual.numero);
+        btn.disabled = !ultimoCodigo;
+        atualizarSimulador();
+    } else {
+        info.innerHTML = '<span style="color:#888">Nenhum cliente selecionado. Vá na aba "Clientes" e cadastre um.</span>';
+        btn.disabled = true;
+        document.getElementById('simulador').style.display = 'none';
+    }
+}
+
+function atualizarSimulador() {
+    if (!clienteAtual || !ultimoCodigo) {
+        document.getElementById('simulador').style.display = 'none';
+        return;
+    }
+
+    let mensagem = document.getElementById('mensagemCliente').value;
+    mensagem = mensagem.replace(/{NOME}/g, clienteAtual.nome);
+    mensagem = mensagem.replace(/{CODIGO}/g, ultimoCodigo);
+
+    // wa.me precisa do 55 na frente
+    const numeroWa = '55' + clienteAtual.numero;
+    const link = 'https://wa.me/' + numeroWa + '?text=' + encodeURIComponent(mensagem);
+
+    document.getElementById('simNome').textContent = clienteAtual.nome;
+    document.getElementById('simNumero').textContent = formatarNumero(clienteAtual.numero);
+    document.getElementById('simMensagem').textContent = mensagem;
+    document.getElementById('avisoNome').textContent = clienteAtual.nome;
+    document.getElementById('simLink').textContent = link;
+    document.getElementById('simulador').style.display = 'block';
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
 
 function calcularChecksum(segmento) {
     let checksum = 0;
-    for (let char of segmento) {
-        checksum += char.charCodeAt(0);
+    for (let i = 0; i < segmento.length; i++) {
+        checksum += segmento.charCodeAt(i);
     }
     return CHARS[checksum % CHARS.length];
 }
 
 function gerarCodigo() {
-    const segmento = document.getElementById('segmento').value.toUpperCase();
+    const input = document.getElementById('segmento');
+    const segmento = input.value.toUpperCase().trim();
 
     if (segmento.length !== 4) {
         alert('⚠️ Digite exatamente 4 caracteres!');
         return;
     }
 
-    for (let char of segmento) {
-        if (!CHARS.includes(char)) {
-            alert('⚠️ Caractere inválido: "' + char + '"\nUse apenas: A-Z (sem I, O) e 2-9');
+    for (let i = 0; i < segmento.length; i++) {
+        if (!CHARS.includes(segmento[i])) {
+            alert('⚠️ Caractere inválido: "' + segmento[i] + '"\nUse apenas: A-Z (sem I, O) e 2-9');
             return;
         }
     }
@@ -95,6 +403,7 @@ function gerarCodigo() {
 
     mostrarResultado(codigo);
     adicionarLista(codigo);
+    mostrarToast('Código gerado com sucesso!');
 }
 
 function gerarAleatorio() {
@@ -109,11 +418,12 @@ function gerarAleatorio() {
     document.getElementById('segmento').value = segmento;
     mostrarResultado(codigo);
     adicionarLista(codigo);
+    mostrarToast('Código aleatório gerado!');
 }
 
 function gerarVarios(quantidade) {
     const lista = document.getElementById('lista-codigos');
-    lista.innerHTML = '<div style="font-weight:700;color:#1B5E20;margin-bottom:10px">📋 Códigos Gerados:</div>';
+    lista.innerHTML = '<div class="lista-titulo">📋 Códigos Gerados:</div>';
 
     for (let i = 0; i < quantidade; i++) {
         let segmento = '';
@@ -125,37 +435,149 @@ function gerarVarios(quantidade) {
         adicionarLista(codigo);
     }
 
+    document.getElementById('resultado').classList.remove('mostrar');
+    document.getElementById('secao-envio').style.display = 'none';
     mostrarToast(quantidade + ' códigos gerados!');
 }
 
 function mostrarResultado(codigo) {
+    ultimoCodigo = codigo;
     const resultado = document.getElementById('resultado');
     document.getElementById('codigo-gerado').textContent = codigo;
     document.getElementById('validacao').textContent = '✅ Código válido - Pronto para usar';
     resultado.classList.add('mostrar');
+
+    document.getElementById('secao-envio').style.display = 'block';
+    onClienteSelecionado();
 }
 
 function adicionarLista(codigo) {
     const lista = document.getElementById('lista-codigos');
+
+    if (!lista.querySelector('.lista-titulo')) {
+        const titulo = document.createElement('div');
+        titulo.className = 'lista-titulo';
+        titulo.textContent = '📋 Códigos Gerados:';
+        lista.insertBefore(titulo, lista.firstChild);
+    }
+
     const item = document.createElement('div');
     item.className = 'codigo-item';
-    item.innerHTML = '<span class="texto">' + codigo + '</span><button class="copiar" onclick="copiarCodigo(this, '' + codigo + '')">📋 Copiar</button>';
+
+    const span = document.createElement('span');
+    span.className = 'texto';
+    span.textContent = codigo;
+
+    const acoes = document.createElement('div');
+    acoes.className = 'acoes';
+
+    const btnCopiar = document.createElement('button');
+    btnCopiar.className = 'copiar';
+    btnCopiar.textContent = '📋';
+    btnCopiar.title = 'Copiar';
+    btnCopiar.addEventListener('click', function() { copiarCodigo(this, codigo); });
+
+    const btnEnviar = document.createElement('button');
+    btnEnviar.className = 'enviar';
+    btnEnviar.textContent = '💬';
+    btnEnviar.title = 'Enviar pelo WhatsApp';
+    btnEnviar.addEventListener('click', function() { enviarWhatsAppCodigo(codigo); });
+
+    acoes.appendChild(btnCopiar);
+    acoes.appendChild(btnEnviar);
+    item.appendChild(span);
+    item.appendChild(acoes);
     lista.appendChild(item);
 }
 
 function copiarCodigo(btn, codigo) {
-    navigator.clipboard.writeText(codigo).then(function() {
-        btn.textContent = '✅ Copiado!';
-        setTimeout(function() { btn.textContent = '📋 Copiar'; }, 2000);
-    });
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(codigo).then(function() {
+            btn.textContent = '✅';
+            setTimeout(function() { btn.textContent = '📋'; }, 2000);
+        }).catch(function() {
+            fallbackCopy(codigo, btn);
+        });
+    } else {
+        fallbackCopy(codigo, btn);
+    }
+}
+
+function fallbackCopy(texto, btn) {
+    const ta = document.createElement('textarea');
+    ta.value = texto;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try {
+        document.execCommand('copy');
+        btn.textContent = '✅';
+        setTimeout(function() { btn.textContent = '📋'; }, 2000);
+    } catch(e) {
+        btn.textContent = '❌';
+        setTimeout(function() { btn.textContent = '📋'; }, 2000);
+    }
+    document.body.removeChild(ta);
+}
+
+function enviarWhatsApp() {
+    if (!clienteAtual) {
+        alert('⚠️ Selecione um cliente primeiro!');
+        return;
+    }
+    if (!ultimoCodigo) {
+        alert('⚠️ Gere um código primeiro!');
+        return;
+    }
+
+    let mensagem = document.getElementById('mensagemCliente').value;
+    mensagem = mensagem.replace(/{NOME}/g, clienteAtual.nome);
+    mensagem = mensagem.replace(/{CODIGO}/g, ultimoCodigo);
+
+    // Adiciona 55 na frente para o wa.me
+    const numeroWa = '55' + clienteAtual.numero;
+    const url = 'https://wa.me/' + numeroWa + '?text=' + encodeURIComponent(mensagem);
+    window.open(url, '_blank');
+}
+
+function enviarWhatsAppCodigo(codigo) {
+    if (!clienteAtual) {
+        alert('⚠️ Selecione um cliente na aba "Clientes" primeiro!');
+        mostrarAba('clientes');
+        return;
+    }
+
+    let mensagem = document.getElementById('mensagemCliente').value;
+    mensagem = mensagem.replace(/{NOME}/g, clienteAtual.nome);
+    mensagem = mensagem.replace(/{CODIGO}/g, codigo);
+
+    const numeroWa = '55' + clienteAtual.numero;
+    const url = 'https://wa.me/' + numeroWa + '?text=' + encodeURIComponent(mensagem);
+    window.open(url, '_blank');
 }
 
 function mostrarToast(msg) {
+    const existente = document.querySelector('.toast');
+    if (existente) existente.remove();
+
     const toast = document.createElement('div');
-    toast.style.cssText = 'position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#1B5E20;color:#fff;padding:12px 24px;border-radius:10px;font-size:14px;z-index:1000';
+    toast.className = 'toast';
     toast.textContent = msg;
     document.body.appendChild(toast);
-    setTimeout(function() { toast.remove(); }, 3000);
+    setTimeout(function() { 
+        if (toast.parentNode) toast.parentNode.removeChild(toast); 
+    }, 3000);
+}
+
+// Inicializa
+carregarClientes();
+
+// Registrar Service Worker PWA
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js')
+        .then(r => console.log('SW gerador ok:', r.scope))
+        .catch(e => console.log('SW gerador erro:', e));
 }
 </script>
 </body>
