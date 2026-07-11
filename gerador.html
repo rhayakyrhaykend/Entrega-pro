@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Gerador de Códigos - Entrega+Pro</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:system-ui,-apple-system,sans-serif;background:linear-gradient(135deg,#1B5E20,#2E7D32);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.container{max-width:400px;width:100%}
+.card{background:#fff;border-radius:20px;padding:30px;box-shadow:0 10px 40px rgba(0,0,0,.3)}
+.header{text-align:center;margin-bottom:25px}
+.header h1{font-size:22px;color:#1B5E20}
+.header p{color:#888;font-size:13px;margin-top:5px}
+.input-group{margin-bottom:20px}
+.input-group label{display:block;font-size:13px;color:#555;margin-bottom:8px;font-weight:600}
+.input-group input{width:100%;padding:14px;border:2px solid #e8e8e8;border-radius:12px;font-size:16px;text-align:center;letter-spacing:2px;text-transform:uppercase}
+.input-group input:focus{border-color:#1B5E20;outline:none}
+.btn{width:100%;padding:16px;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;margin-top:10px}
+.btn-primary{background:linear-gradient(135deg,#1B5E20,#2E7D32);color:#fff}
+.btn-secondary{background:#f0f0f0;color:#333}
+.resultado{background:linear-gradient(135deg,#1B5E20,#2E7D32);color:#fff;border-radius:12px;padding:20px;text-align:center;margin-top:20px;display:none}
+.resultado.mostrar{display:block}
+.resultado .label{font-size:12px;opacity:.8;margin-bottom:5px}
+.resultado .codigo{font-size:24px;font-weight:800;letter-spacing:2px}
+.resultado .valido{font-size:12px;margin-top:10px;padding:8px;background:rgba(255,255,255,.2);border-radius:8px}
+.lista-codigos{margin-top:20px;max-height:300px;overflow-y:auto}
+.codigo-item{background:#f8f9fa;border-radius:10px;padding:12px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+.codigo-item .texto{font-family:monospace;font-size:14px;font-weight:700;color:#1B5E20}
+.codigo-item .copiar{background:#1B5E20;color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:12px;cursor:pointer}
+.info-box{background:#e8f5e9;border-radius:12px;padding:15px;margin-top:20px;font-size:12px;color:#1B5E20}
+.info-box strong{display:block;margin-bottom:5px}
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <div class="header">
+            <h1>🔑 Gerador de Códigos</h1>
+            <p>Entrega+Pro - Códigos de Ativação PRO</p>
+        </div>
+
+        <div class="input-group">
+            <label>Digite 4 caracteres (A-Z, 2-9)</label>
+            <input type="text" id="segmento" placeholder="EX: ABCD" maxlength="4" oninput="this.value = this.value.toUpperCase().replace(/[^A-Z2-9]/g, '')">
+        </div>
+
+        <button class="btn btn-primary" onclick="gerarCodigo()">✨ Gerar Código</button>
+        <button class="btn btn-secondary" onclick="gerarAleatorio()" style="margin-top:10px">🎲 Gerar Aleatório</button>
+        <button class="btn btn-secondary" onclick="gerarVarios(10)" style="margin-top:10px">📋 Gerar 10 Códigos</button>
+
+        <div id="resultado" class="resultado">
+            <div class="label">CÓDIGO GERADO</div>
+            <div class="codigo" id="codigo-gerado"></div>
+            <div class="valido" id="validacao"></div>
+        </div>
+
+        <div class="lista-codigos" id="lista-codigos"></div>
+
+        <div class="info-box">
+            <strong>ℹ️ Como funciona:</strong>
+            Cada código só pode ser usado UMA vez. Quando o cliente volta para o plano Gratuito, o código fica bloqueado e ele precisa de um novo código para ativar o PRO novamente.
+        </div>
+    </div>
+</div>
+
+<script>
+const CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+function calcularChecksum(segmento) {
+    let checksum = 0;
+    for (let char of segmento) {
+        checksum += char.charCodeAt(0);
+    }
+    return CHARS[checksum % CHARS.length];
+}
+
+function gerarCodigo() {
+    const segmento = document.getElementById('segmento').value.toUpperCase();
+
+    if (segmento.length !== 4) {
+        alert('⚠️ Digite exatamente 4 caracteres!');
+        return;
+    }
+
+    for (let char of segmento) {
+        if (!CHARS.includes(char)) {
+            alert('⚠️ Caractere inválido: "' + char + '"\nUse apenas: A-Z (sem I, O) e 2-9');
+            return;
+        }
+    }
+
+    const checksum = calcularChecksum(segmento);
+    const codigo = 'DAKI-' + segmento + '-' + checksum;
+
+    mostrarResultado(codigo);
+    adicionarLista(codigo);
+}
+
+function gerarAleatorio() {
+    let segmento = '';
+    for (let i = 0; i < 4; i++) {
+        segmento += CHARS[Math.floor(Math.random() * CHARS.length)];
+    }
+
+    const checksum = calcularChecksum(segmento);
+    const codigo = 'DAKI-' + segmento + '-' + checksum;
+
+    document.getElementById('segmento').value = segmento;
+    mostrarResultado(codigo);
+    adicionarLista(codigo);
+}
+
+function gerarVarios(quantidade) {
+    const lista = document.getElementById('lista-codigos');
+    lista.innerHTML = '<div style="font-weight:700;color:#1B5E20;margin-bottom:10px">📋 Códigos Gerados:</div>';
+
+    for (let i = 0; i < quantidade; i++) {
+        let segmento = '';
+        for (let j = 0; j < 4; j++) {
+            segmento += CHARS[Math.floor(Math.random() * CHARS.length)];
+        }
+        const checksum = calcularChecksum(segmento);
+        const codigo = 'DAKI-' + segmento + '-' + checksum;
+        adicionarLista(codigo);
+    }
+
+    mostrarToast(quantidade + ' códigos gerados!');
+}
+
+function mostrarResultado(codigo) {
+    const resultado = document.getElementById('resultado');
+    document.getElementById('codigo-gerado').textContent = codigo;
+    document.getElementById('validacao').textContent = '✅ Código válido - Pronto para usar';
+    resultado.classList.add('mostrar');
+}
+
+function adicionarLista(codigo) {
+    const lista = document.getElementById('lista-codigos');
+    const item = document.createElement('div');
+    item.className = 'codigo-item';
+    item.innerHTML = '<span class="texto">' + codigo + '</span><button class="copiar" onclick="copiarCodigo(this, '' + codigo + '')">📋 Copiar</button>';
+    lista.appendChild(item);
+}
+
+function copiarCodigo(btn, codigo) {
+    navigator.clipboard.writeText(codigo).then(function() {
+        btn.textContent = '✅ Copiado!';
+        setTimeout(function() { btn.textContent = '📋 Copiar'; }, 2000);
+    });
+}
+
+function mostrarToast(msg) {
+    const toast = document.createElement('div');
+    toast.style.cssText = 'position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#1B5E20;color:#fff;padding:12px 24px;border-radius:10px;font-size:14px;z-index:1000';
+    toast.textContent = msg;
+    document.body.appendChild(toast);
+    setTimeout(function() { toast.remove(); }, 3000);
+}
+</script>
+</body>
+</html>
