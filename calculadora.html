@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#1B5E20">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Calculadora - Entrega+Pro">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Calculadora - Entrega+Pro</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:system-ui,-apple-system,sans-serif;background:#f5f5f7;color:#1c1c1e;min-height:100vh}
+.app-bar{background:linear-gradient(135deg,#1B5E20,#2E7D32);color:#fff;padding:16px 20px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.15);display:flex;align-items:center;gap:12px}
+.app-bar .back{background:rgba(255,255,255,.2);border:none;color:#fff;width:36px;height:36px;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.app-bar h1{font-size:18px;font-weight:600}
+.container{padding:20px;max-width:500px;margin:0 auto}
+.card{background:#fff;border-radius:16px;padding:20px;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.card-title{font-size:16px;font-weight:600;color:#1B5E20;margin-bottom:14px}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.field{flex:1;min-width:120px}
+.field label{display:block;font-size:11px;color:#888;margin-bottom:4px;font-weight:600}
+.field input{width:100%;padding:10px;border:2px solid #e8e8e8;border-radius:10px;font-size:14px;text-align:center}
+.field input:focus{border-color:#1B5E20;outline:none}
+.metric-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.metric-card{background:#f8f9fa;border:1px solid #e8e8e8;border-radius:12px;padding:14px 10px;text-align:center}
+.metric-label{font-size:10px;color:#888;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.metric-value{font-size:24px;font-weight:700;color:#1c1c1e;font-variant-numeric:tabular-nums}
+.metric-sub{font-size:11px;color:#888;margin-top:4px}
+.chart-bar{height:6px;border-radius:3px;background:#e8e8e8;overflow:hidden;margin-top:8px}
+.chart-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,#1B5E20,#2E7D32);transition:width .4s ease-out}
+.comparison-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #f0f0f0}
+.comparison-row:last-child{border-bottom:none}
+.comparison-label{flex:1;font-size:13px;color:#555}
+.comparison-value{font-size:14px;font-weight:700;font-variant-numeric:tabular-nums}
+.comparison-value.wrong{color:#ff3b30}
+.comparison-value.correct{color:#34c759}
+.tag{display:inline-block;padding:2px 8px;border-radius:6px;font-size:10px;font-weight:700}
+.tag-wrong{background:#ff3b3015;color:#ff3b30}
+.tag-correct{background:#34c75915;color:#34c759}
+.formula-box{background:#f8f9fa;border-radius:10px;padding:12px;font-size:12px;color:#555;line-height:1.7}
+.formula-box code{font-family:monospace;background:#e8e8e8;padding:1px 5px;border-radius:4px;font-size:11px}
+.highlight{color:#1B5E20;font-weight:700}
+.btn{display:block;width:100%;padding:14px;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;text-align:center;text-decoration:none;margin-top:10px}
+.btn-primary{background:linear-gradient(135deg,#1B5E20,#2E7D32);color:#fff}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#1B5E20;color:#fff;padding:12px 24px;border-radius:10px;font-size:14px;z-index:1000;animation:fadeIn .3s}
+@keyframes fadeIn{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+</style>
+</head>
+<body>
+<div class="app-bar">
+    <button class="back" onclick="history.back()">←</button>
+    <h1>🧮 Calculadora de Entregas</h1>
+</div>
+
+<div class="container">
+    <div class="card">
+        <div class="card-title">Parâmetros da rota</div>
+        <div class="row">
+            <div class="field">
+                <label>Distância (km)</label>
+                <input type="number" id="distancia" value="15" min="1" max="500" step="1">
+            </div>
+            <div class="field">
+                <label>Velocidade (km/h)</label>
+                <input type="number" id="velocidade" value="25" min="5" max="120" step="1">
+            </div>
+        </div>
+        <div class="row">
+            <div class="field">
+                <label>Tempo/entrega (min)</label>
+                <input type="number" id="tempoEntrega" value="8" min="1" max="60" step="1">
+            </div>
+            <div class="field">
+                <label>Horas/dia</label>
+                <input type="number" id="horasDia" value="8" min="1" max="24" step="0.5">
+            </div>
+        </div>
+        <div class="row">
+            <div class="field">
+                <label>Dias/semana</label>
+                <input type="number" id="diasSemana" value="5" min="1" max="7" step="1">
+            </div>
+            <div class="field">
+                <label>Dias/mês</label>
+                <input type="number" id="diasMes" value="22" min="1" max="31" step="1">
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Resultados por distância</div>
+        <div class="metric-grid">
+            <div class="metric-card">
+                <div class="metric-label">Entregas / hora</div>
+                <div class="metric-value" id="resHora">—</div>
+                <div class="metric-sub" id="subHora">—</div>
+                <div class="chart-bar"><div class="chart-fill" id="barHora" style="width:0%"></div></div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Entregas / dia</div>
+                <div class="metric-value" id="resDia">—</div>
+                <div class="metric-sub" id="subDia">—</div>
+                <div class="chart-bar"><div class="chart-fill" id="barDia" style="width:0%"></div></div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Entregas / semana</div>
+                <div class="metric-value" id="resSemana">—</div>
+                <div class="metric-sub" id="subSemana">—</div>
+                <div class="chart-bar"><div class="chart-fill" id="barSemana" style="width:0%"></div></div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Entregas / mês</div>
+                <div class="metric-value" id="resMes">—</div>
+                <div class="metric-sub" id="subMes">—</div>
+                <div class="chart-bar"><div class="chart-fill" id="barMes" style="width:0%"></div></div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="card">
+        <div class="card-title">💰 Projeção de Ganhos (R$)</div>
+        <div class="input-group">
+            <label>Valor por entrega (R$)</label>
+            <input type="number" id="valorEntrega" value="8" min="1" step="0.5" oninput="calc()">
+        </div>
+        <div class="metric-grid">
+            <div class="metric-card">
+                <div class="metric-label">Ganho / hora</div>
+                <div class="metric-value" id="ganhoHora">—</div>
+                <div class="metric-sub" id="subGanhoHora">—</div>
+                <div class="chart-bar"><div class="chart-fill" id="barGanhoHora" style="width:0%"></div></div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Ganho / dia</div>
+                <div class="metric-value" id="ganhoDia">—</div>
+                <div class="metric-sub" id="subGanhoDia">—</div>
+                <div class="chart-bar"><div class="chart-fill" id="barGanhoDia" style="width:0%"></div></div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Ganho / semana</div>
+                <div class="metric-value" id="ganhoSemana">—</div>
+                <div class="metric-sub" id="subGanhoSemana">—</div>
+                <div class="chart-bar"><div class="chart-fill" id="barGanhoSemana" style="width:0%"></div></div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Ganho / mês</div>
+                <div class="metric-value" id="ganhoMes">—</div>
+                <div class="metric-sub" id="subGanhoMes">—</div>
+                <div class="chart-bar"><div class="chart-fill" id="barGanhoMes" style="width:0%"></div></div>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script>
+const fmt = n => n.toLocaleString('pt-BR', {maximumFractionDigits:1});
+const fmtInt = n => Math.round(n).toLocaleString('pt-BR');
+
+function calc() {
+    const dist = parseFloat(document.getElementById('distancia').value) || 0;
+    const vel = parseFloat(document.getElementById('velocidade').value) || 1;
+    const tEntregaMin = parseFloat(document.getElementById('tempoEntrega').value) || 0;
+    const horasDia = parseFloat(document.getElementById('horasDia').value) || 0;
+    const diasSemana = parseFloat(document.getElementById('diasSemana').value) || 0;
+    const diasMes = parseFloat(document.getElementById('diasMes').value) || 0;
+    const valorEntrega = parseFloat(document.getElementById('valorEntrega').value) || 0;
+
+    const tempoDesloc = dist / vel;
+    const tempoEntregaH = tEntregaMin / 60;
+    const tempoTotal = tempoDesloc + tempoEntregaH;
+    const entregasHora = tempoTotal > 0 ? 1 / tempoTotal : 0;
+    const entregasDia = entregasHora * horasDia;
+    const entregasSemana = entregasDia * diasSemana;
+    const entregasMes = entregasDia * diasMes;
+
+    // Entregas
+    document.getElementById('resHora').textContent = fmt(entregasHora);
+    document.getElementById('subHora').textContent = fmt(tempoTotal * 60) + ' min/entrega';
+    document.getElementById('resDia').textContent = fmtInt(entregasDia);
+    document.getElementById('subDia').textContent = fmt(entregasHora) + ' × ' + horasDia + 'h';
+    document.getElementById('resSemana').textContent = fmtInt(entregasSemana);
+    document.getElementById('subSemana').textContent = fmtInt(entregasDia) + ' × ' + diasSemana + ' dias';
+    document.getElementById('resMes').textContent = fmtInt(entregasMes);
+    document.getElementById('subMes').textContent = fmtInt(entregasDia) + ' × ' + diasMes + ' dias';
+
+    const maxBar = Math.max(entregasHora, entregasDia, entregasSemana, entregasMes, 1);
+    document.getElementById('barHora').style.width = (entregasHora / maxBar * 100) + '%';
+    document.getElementById('barDia').style.width = (entregasDia / maxBar * 100) + '%';
+    document.getElementById('barSemana').style.width = (entregasSemana / maxBar * 100) + '%';
+    document.getElementById('barMes').style.width = (entregasMes / maxBar * 100) + '%';
+
+    // Ganhos em R$
+    const ganhoHora = entregasHora * valorEntrega;
+    const ganhoDia = entregasDia * valorEntrega;
+    const ganhoSemana = entregasSemana * valorEntrega;
+    const ganhoMes = entregasMes * valorEntrega;
+
+    document.getElementById('ganhoHora').textContent = 'R$ ' + fmt(ganhoHora);
+    document.getElementById('subGanhoHora').textContent = fmt(entregasHora) + ' entregas × R$' + valorEntrega;
+    document.getElementById('ganhoDia').textContent = 'R$ ' + fmt(ganhoDia);
+    document.getElementById('subGanhoDia').textContent = fmtInt(entregasDia) + ' entregas × R$' + valorEntrega;
+    document.getElementById('ganhoSemana').textContent = 'R$ ' + fmt(ganhoSemana);
+    document.getElementById('subGanhoSemana').textContent = fmtInt(entregasSemana) + ' entregas × R$' + valorEntrega;
+    document.getElementById('ganhoMes').textContent = 'R$ ' + fmt(ganhoMes);
+    document.getElementById('subGanhoMes').textContent = fmtInt(entregasMes) + ' entregas × R$' + valorEntrega;
+
+    const maxBarGanho = Math.max(ganhoHora, ganhoDia, ganhoSemana, ganhoMes, 1);
+    document.getElementById('barGanhoHora').style.width = (ganhoHora / maxBarGanho * 100) + '%';
+    document.getElementById('barGanhoDia').style.width = (ganhoDia / maxBarGanho * 100) + '%';
+    document.getElementById('barGanhoSemana').style.width = (ganhoSemana / maxBarGanho * 100) + '%';
+    document.getElementById('barGanhoMes').style.width = (ganhoMes / maxBarGanho * 100) + '%';
+
+
+}
+
+['distancia','velocidade','tempoEntrega','horasDia','diasSemana','diasMes','valorEntrega'].forEach(id => {
+    document.getElementById(id).addEventListener('input', calc);
+});
+
+// Registrar Service Worker
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js')
+        .then(r => console.log('SW ok:', r.scope))
+        .catch(e => console.log('SW erro:', e));
+}
+
+calc();
+</script>
+</body>
+</html>
